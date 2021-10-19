@@ -95,5 +95,37 @@ class TestItem {
 		assertEquals(9100, Item.currentItemID);
 	}
 	
-		
+	@Test
+	void testGetPrice() {
+		System.out.println("testGetPrice of Item called");
+		assertEquals(10.00,item.getPrice(LocalDate.of(2000, 11, 21)));	// Day before a year
+		assertEquals(10.00,item.getPrice(LocalDate.of(2000, 11, 22))); // Day of the year
+		assertEquals(5.00,item.getPrice(LocalDate.of(2000, 11, 23))); // Day after the year
+	}
+	
+	@Test 
+	void testSetDiscount() {
+		System.out.println("testSetDiscount called");
+		assertFalse(item.setDiscount(0.7));
+		assertFalse(item.setDiscount(1.0));
+		assertTrue(item.setDiscount(0.4));
+	}
+	
+	@Test 
+	void testSell() {
+		System.out.println("testSell called");
+		assertEquals(0, item.sell(0, LocalDate.of(2000, 11, 22)));	// amount <= 0
+//		sellDate is before release date
+		assertEquals(0, item.sell(10, LocalDate.of(1999, 11, 21))); 
+		assertEquals(10, item.sell(1, LocalDate.of(1999, 11, 22))); // amount == quality
+		assertEquals(0 , item.sell(2, LocalDate.of(2000, 11, 22)));	// amount > quality
+	}
+	
+	@Test 
+	void testAddStock () {
+		System.out.println("testAddStock called");
+		assertFalse(item.addStock(100));
+		assertTrue(item.addStock(99));
+		assertFalse(item.addStock(10));
+	}	
 }
